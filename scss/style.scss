@@ -1,0 +1,157 @@
+
+//VARIABLES
+
+//colors
+
+$light-mode-text: rgb(17, 21, 23);
+$light-mode-input: rgb(133,133,133);
+$light-mode-bg: rgb(250, 250, 250);
+$light-mode-el: rgb(255, 255, 255);
+
+$dark-mode-el: rgb(43, 57, 69);
+$dark-mode-bg: rgb(32, 44, 55);
+$dark-mode-text: $light-mode-el;
+
+//fonts
+$font-size-main: 14px;
+$font-size-extra: 16px;
+
+//border
+$radius: 5px;
+
+//mixins
+@mixin user-input-style{
+    height: 3rem;
+    border: none;
+    outline: none;
+    background-color: $light-mode-bg;
+    color: $light-mode-input;
+    border-radius: $radius;
+    box-shadow: 0px 0px 20px darken($light-mode-el, $amount: 15);
+}
+
+
+*{
+    box-sizing: border-box;
+}
+
+html{
+    font-size: $font-size-main;
+}
+
+body{
+    font-family: 'Nunito', sans-serif;
+    color: $light-mode-text;
+    background-color: $light-mode-bg;
+    width: 100%;
+    height: 100vh;
+}
+
+
+
+.wrapper{
+    display: flex;
+    flex-flow: nowrap column;
+    align-items: center;
+    background-color: $light-mode-bg;
+    header{
+        display: flex;
+        flex-flow: nowrap row;
+        justify-content: space-between;
+        background-color: $light-mode-el;
+        box-shadow: 0px 3px 5px darken($light-mode-el, $amount: 10);
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        h2{
+            margin: 1rem;
+        }
+        div{
+            cursor: pointer;
+            p{
+                margin: 1rem;
+                padding-top: 6px;
+                span{
+                    margin-right: .5rem;
+                }
+            }
+        }
+    }
+    main{
+        display: flex;
+        flex-flow: wrap column;
+        align-items: center;
+        width: 100%;
+        .user-input{
+            display: flex;
+            flex-flow: nowrap column;
+            align-items: flex-start;
+            width: 90%;
+            margin: 0 auto 2rem;
+            //margin-bottom: 2rem;
+            input{
+                @include user-input-style;
+                width: 100%;
+                max-width: 400px;
+                margin-bottom: 3rem;
+                padding: 0 1rem;
+                &::placeholder {
+                    color: $light-mode-text;
+                    opacity: 1; /* Firefox */
+                    color: #858585;
+                  }
+                }
+            #filter{
+                @include user-input-style;
+                width: 40%;
+                max-width: 180px;
+                }
+            }
+        .content{
+            margin: 0 auto;
+            width: 80%;
+            .card{
+                background-color: $light-mode-bg;
+                width: 100%;
+                max-width: 700px;
+                border-radius: $radius;
+                box-shadow: 0px 0px 20px darken($light-mode-el, $amount: 15);
+                margin-bottom: 2rem;
+                img{
+                    width: 100%;
+                }
+                div{
+                    display: flex;
+                    flex-flow: nowrap column;
+                    align-items: center;
+                    
+                }
+            }
+        }
+        }
+    }
+
+
+
+
+// .card{
+//     background-color: white;
+// }
+
+.extra{
+    display: none;
+}
+
+
+.dark-mode-search::placeholder {
+    color: #858585;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #858585;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #858585;
+  }
