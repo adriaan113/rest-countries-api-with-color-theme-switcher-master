@@ -140,11 +140,53 @@ async function getCountries(){
   }
 }
 
-//getCountries();
+function searchFilter(data){
+
+  for(let i=0; i<data.length; i++){
+    // console.log(data[i].name);
+    // console.log(contentSection.children[i].children[1].textContent);
+
+    const txtValue = contentSection.children[i].children[1].textContent;
+
+    if(contentSection.children[i].children[1].textContent.toUpperCase().indexOf(searchField.value.toUpperCase()) > -1){
+      contentSection.children[i].style.display = "";
+
+    }else{
+      contentSection.children[i].style.display = "none";
+
+    }
+  }
+}
+
 
 getCountries().then(data =>{
+
+searchField.addEventListener('keyup',()=>{
+  searchFilter(data);
+});
+  
  
   darkLightSwitch.addEventListener('click',()=>{
     switcheroo();
   });
 })
+
+
+
+
+
+
+
+// searchField
+
+
+
+// for (i = 0; i < li.length; i++) {
+//   a = li[i].getElementsByTagName("a")[0];
+//   txtValue = a.textContent || a.innerText;
+//   if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//     li[i].style.display = "";
+//   } else {
+//     li[i].style.display = "none";
+//   }
+// }

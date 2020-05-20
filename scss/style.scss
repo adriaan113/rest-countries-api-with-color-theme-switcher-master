@@ -87,7 +87,7 @@ body{
             display: flex;
             flex-flow: nowrap column;
             align-items: flex-start;
-            width: 90%;
+            width: 80%;
             margin: 0 auto 2rem;
             //margin-bottom: 2rem;
             input{
@@ -121,11 +121,15 @@ body{
                 img{
                     width: 100%;
                 }
-                div{
+                h4{
+                    text-align: center;
+                }
+                ul{
                     display: flex;
                     flex-flow: nowrap column;
                     align-items: center;
-                    
+                    list-style: none;
+                    padding: 0;
                 }
             }
         }
