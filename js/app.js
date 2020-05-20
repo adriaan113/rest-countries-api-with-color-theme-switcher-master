@@ -115,9 +115,10 @@ async function getCountries(){
       const population= data[i].population;
       const region= data[i].region;
       const capital= data[i].capital;
-      const subRegion= data[i].subRegion;
+      const subRegion= data[i].subregion;
       const flag= data[i].flag;
 
+      // console.log(data[i].region);
 
       contentSection.innerHTML+=
         `
@@ -158,35 +159,60 @@ function searchFilter(data){
   }
 }
 
+function regionFilter(data, r){
+
+  for(let i=0;i<data.length;i++){
+    if(data[i].region === r){
+      contentSection.children[i].style.display = "";
+    }else{
+      contentSection.children[i].style.display = "none";
+    }
+  }
+  }
+
+  function resetList(data){
+    for(let i=0;i<data.length;i++){
+
+      contentSection.children[i].style.display = "";
+   
+  }
+}
 
 getCountries().then(data =>{
 
 searchField.addEventListener('keyup',()=>{
   searchFilter(data);
 });
+
+
+
+filterByContinent.addEventListener('change', function() {
+
+
+  switch(this.value){
+    case 'ALL':
+      resetList(data);
+      break;
+    case 'AF':
+      regionFilter(data,'Africa');
+      break;
+    case 'AM':
+      regionFilter(data,'Americas');
+      break;
+    case 'AS':
+      regionFilter(data,'Asia');
+      break;
+    case 'EU':
+      regionFilter(data,'Europe');
+      break;
+    case 'OC':
+      regionFilter(data,'Oceania');
+      break;
+  }
+}, false);
   
- 
+
   darkLightSwitch.addEventListener('click',()=>{
     switcheroo();
   });
 })
-
-
-
-
-
-
-
-// searchField
-
-
-
-// for (i = 0; i < li.length; i++) {
-//   a = li[i].getElementsByTagName("a")[0];
-//   txtValue = a.textContent || a.innerText;
-//   if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//     li[i].style.display = "";
-//   } else {
-//     li[i].style.display = "none";
-//   }
-// }
