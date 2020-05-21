@@ -11,8 +11,9 @@ const darkModebBg = 'rgb(32, 44, 55)';
 const darkModeText = lightModeEl;
 
 
-//TO DO LIST: ADD MQ, ADD MODAL OR SOMETHING ELSE FOR THE EXTRA INFORMATION WHEN CLICKED
-//IF FILTERCONTINENT THEN SEARCH IS DAAROP AANGEPAST
+//TO DO LIST: ADD MQ, style modal, change borders to their full name, make header logo a link,
+// save state so that api doesn't reload every time, add more e.target on card
+
 
 //DARK MODE
 
@@ -224,42 +225,41 @@ function switchToDetails(data){
         `;
 
 
+
+        border.innerHTML +=
+        `
+          <h3>Border countries:</h3>
+          <ul>
+            
+          </ul>
+        `;
+
         for(let j=0;j<data[i].borders.length;j++){
 
-          console.log(data[i].borders[j]);
+          let arr = [];
 
-          //let liBorderLand = document.createElement('LI');
-          // liBorderLand[j] = data[i].borders[j];
+          arr.push(data[i].borders[j]);
 
-          //liBorderLand[j] += data[i].borders[j];
+          let liBorderLand = document.createElement('LI');
+          liBorderLand.innerHTML += arr;
+          border.children[1].appendChild(liBorderLand);
 
-          // border.innerHTML +=
-          // `
-          //   <h3>Border countries:</h3>
-          //   <ul>
-              
-          //   </ul>
-          // `;
-
-          //border.children[1].appendChild(liBorderLand);
         }
-       
-
-
-
-
       }else{
         console.log(false);
-      }
-      
-     
-      // extraSection.style.display = 'flex';
-      // contentSection.style.display = 'none';
-      // userInput.style.display = 'none';
-      
+      } 
     });
   }
+}
 
+function fromAbbrToFullName(data){ 
+  for(let i=0;i<data.length;i++){
+    const dataName = {
+      abbr : data[i].alpha3Code,
+      full : data[i].name
+    }
+    console.log(dataName.full);
+  }  
 }
 
 getCountries().then(data =>{
@@ -302,7 +302,7 @@ filterByContinent.addEventListener('change', function() {
 
   switchToDetails(data);
 
-  
+  //fromAbbrToFullName(data);
 
 })
 
