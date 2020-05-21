@@ -11,6 +11,8 @@ const darkModebBg = 'rgb(32, 44, 55)';
 const darkModeText = lightModeEl;
 
 
+//TO DO LIST: ADD MQ, ADD MODAL OR SOMETHING ELSE FOR THE EXTRA INFORMATION WHEN CLICKED
+//IF FILTERCONTINENT THEN SEARCH IS DAAROP AANGEPAST
 
 //DARK MODE
 
@@ -30,6 +32,13 @@ const filterByContinent = document.querySelector('#filter');
 
 const card = document.querySelectorAll('.card');
 
+
+
+const extraSection = document.querySelector('.extra');
+const details = document.querySelector('.details');
+const moreDetails = document.querySelector('.more-details');
+const border = document.querySelector('.border');
+const userInput = document.querySelector('.user-input');
 
 
 function switcheroo(){
@@ -115,7 +124,7 @@ async function getCountries(){
       const population= data[i].population;
       const region= data[i].region;
       const capital= data[i].capital;
-      const subRegion= data[i].subregion;
+      //const subRegion= data[i].subregion;
       const flag= data[i].flag;
 
       // console.log(data[i].region);
@@ -131,7 +140,7 @@ async function getCountries(){
                           <li><p>Capital: ${capital}</p></li>
                       </ul>
                   </div>
-        `
+        `;
     }
 
     return data;
@@ -147,7 +156,7 @@ function searchFilter(data){
     // console.log(data[i].name);
     // console.log(contentSection.children[i].children[1].textContent);
 
-    const txtValue = contentSection.children[i].children[1].textContent;
+    //const txtValue = contentSection.children[i].children[1].textContent;
 
     if(contentSection.children[i].children[1].textContent.toUpperCase().indexOf(searchField.value.toUpperCase()) > -1){
       contentSection.children[i].style.display = "";
@@ -176,6 +185,81 @@ function regionFilter(data, r){
       contentSection.children[i].style.display = "";
    
   }
+}
+
+
+function switchToDetails(data){
+
+  for(let i=0;i<data.length;i++){
+    contentSection.children[i].addEventListener('click',(e)=>{
+
+      if(e.target.textContent === data[i].name){
+        console.log(true);
+
+        extraSection.style.display = 'flex';
+        contentSection.style.display = 'none';
+        userInput.style.display = 'none';
+
+        details.innerHTML +=
+        `
+        <img src="${data[i].flag}" alt="">
+        <div>
+            <h1>${data[i].name}</h1>
+            <ul>
+                <li>Native name: ${data[i].nativeName}</li>
+                <li>Population: ${data[i].population}</li>
+                <li>Region: ${data[i].region}</li>
+                <li>Sub Region: ${data[i].subregion}</li>
+                <li>Capital: ${data[i].capital}</li>
+            </ul>
+        `;
+
+        moreDetails.innerHTML +=
+        `
+          <ul>
+              <li>Top level domain: ${data[i].topLevelDomain[0]}</li>
+              <li>Currencies: ${data[i].currencies[0].name}</li>
+              <li>Languages: ${data[i].languages[0].name}</li>
+          </ul>
+        `;
+
+
+        for(let j=0;j<data[i].borders.length;j++){
+
+          console.log(data[i].borders[j]);
+
+          //let liBorderLand = document.createElement('LI');
+          // liBorderLand[j] = data[i].borders[j];
+
+          //liBorderLand[j] += data[i].borders[j];
+
+          // border.innerHTML +=
+          // `
+          //   <h3>Border countries:</h3>
+          //   <ul>
+              
+          //   </ul>
+          // `;
+
+          //border.children[1].appendChild(liBorderLand);
+        }
+       
+
+
+
+
+      }else{
+        console.log(false);
+      }
+      
+     
+      // extraSection.style.display = 'flex';
+      // contentSection.style.display = 'none';
+      // userInput.style.display = 'none';
+      
+    });
+  }
+
 }
 
 getCountries().then(data =>{
@@ -215,4 +299,13 @@ filterByContinent.addEventListener('change', function() {
   darkLightSwitch.addEventListener('click',()=>{
     switcheroo();
   });
+
+  switchToDetails(data);
+
+  
+
 })
+
+
+
+
