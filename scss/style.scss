@@ -146,6 +146,54 @@ body{
 
 .extra{
     display: none;
+    flex-flow: nowrap column;
+    align-items: flex-start;
+    width: 90%;
+    div{
+        button{
+            @include user-input-style;
+            width: 100px;
+            height: 30px;
+            margin-bottom: 3rem;
+            color: $light-mode-text;
+            cursor: pointer;
+            .fa-arrow-left{
+                margin-right: 1rem;
+                margin-top: 5px;
+                color: $light-mode-text;
+            }
+        }
+    }
+    .details{
+       // width: 100%;
+       display: flex;
+       flex-flow: nowrap column;
+       align-items: flex-start;
+        img{
+            width: 100%;
+            align-self: center;
+            margin-bottom: 3rem;
+        }
+        h1{
+            margin: 0 0 2rem;
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+            li{
+                padding: .5rem 0;
+            }
+        }
+    }
+    .more-details{
+        ul{
+            list-style: none;
+            padding: 0;
+            li{
+                padding: .5rem 0;
+            }
+        }
+    }
 }
 
 

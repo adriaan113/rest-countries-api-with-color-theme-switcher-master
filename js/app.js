@@ -207,20 +207,20 @@ function switchToDetails(data){
         <div>
             <h1>${data[i].name}</h1>
             <ul>
-                <li>Native name: ${data[i].nativeName}</li>
-                <li>Population: ${data[i].population}</li>
-                <li>Region: ${data[i].region}</li>
-                <li>Sub Region: ${data[i].subregion}</li>
-                <li>Capital: ${data[i].capital}</li>
+                <li><b>Native name:</b> ${data[i].nativeName}</li>
+                <li><b>Population:</b> ${data[i].population}</li>
+                <li><b>Region:</b> ${data[i].region}</li>
+                <li><b>Sub Region:</b> ${data[i].subregion}</li>
+                <li><b>Capital:</b> ${data[i].capital}</li>
             </ul>
         `;
 
         moreDetails.innerHTML +=
         `
           <ul>
-              <li>Top level domain: ${data[i].topLevelDomain[0]}</li>
-              <li>Currencies: ${data[i].currencies[0].name}</li>
-              <li>Languages: ${data[i].languages[0].name}</li>
+              <li><b>Top level domain:</b> ${data[i].topLevelDomain[0]}</li>
+              <li><b>Currencies:</b> ${data[i].currencies[0].name}</li>
+              <li><b>Languages:</b> ${data[i].languages[0].name}</li>
           </ul>
         `;
 
@@ -262,6 +262,29 @@ function fromAbbrToFullName(data){
   }  
 }
 
+function backToMainContent(data){
+  const btn = document.querySelector('.extra div button');
+
+  btn.addEventListener('click', ()=>{
+    extraSection.style.display = 'none';
+    contentSection.style.display = 'block';
+    userInput.style.display = 'flex';
+
+   while(details.firstChild){
+     details.removeChild(details.firstChild);
+   }
+
+   while(moreDetails.firstChild){
+     moreDetails.removeChild(moreDetails.firstChild);
+   }
+
+   while(border.firstChild){
+     border.removeChild(border.firstChild);
+   }
+  });
+   
+}
+
 getCountries().then(data =>{
 
 searchField.addEventListener('keyup',()=>{
@@ -301,6 +324,8 @@ filterByContinent.addEventListener('change', function() {
   });
 
   switchToDetails(data);
+
+  backToMainContent(data);
 
   //fromAbbrToFullName(data);
 
