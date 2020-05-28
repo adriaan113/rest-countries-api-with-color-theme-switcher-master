@@ -11,8 +11,8 @@ const darkModebBg = 'rgb(32, 44, 55)';
 const darkModeText = lightModeEl;
 
 
-//TO DO LIST: ADD MQ, style modal, change borders to their full name, make header logo a link,
-// save state so that api doesn't reload every time, add more e.target on card
+//TO DO LIST: ADD MQ, change borders to their full name, make header logo a link,
+// save state so that api doesn't reload every time
 
 
 //DARK MODE
@@ -28,7 +28,7 @@ const searchField = document.querySelector('#search');
 searchField.style.backgroundColor = lightModeEl;
 
 const filterByContinent = document.querySelector('#filter');
-//filterByContinent.style.backgroundColor = lightModeEl;
+
 
 
 const card = document.querySelectorAll('.card');
@@ -60,6 +60,9 @@ function switcheroo(){
 
     allH2.style.color = lightModeText;
 
+    darkLightSwitch.children[1].textContent = 'Dark mode';
+    darkLightSwitch.children[0].style.color = lightModeText;
+
     for(let i= 0; i<allP.length; i++){
       allP[i].style.color = lightModeText;
     }
@@ -90,11 +93,8 @@ function switcheroo(){
 
     allH2.style.color = darkModeText;
 
-    // darkLightSwitch.children[0].innerHTML = '<p><span><i class="far fa-moon"></i></span>Light mode</p>';
-    // darkLightSwitch.children[0].replace("Dark mode", "Light mode");
-    darkLightSwitch.children[1].textContent= 'Light mode';
-
-    //darkLightSwitch.children[0].innerHTML = darkLightSwitch.children[0].innerHTML.replace('<p><span><i class="far fa-moon"></i></span>Dark mode</p>', '<p><span><i class="far fa-moon"></i></span>Light mode</p>');
+    darkLightSwitch.children[1].textContent = 'Light mode';
+    darkLightSwitch.children[0].style.color = darkModeText;
 
     for(let i= 0; i<allP.length; i++){
       allP[i].style.color = darkModeText;
@@ -117,6 +117,7 @@ function switcheroo(){
 //FETCH
 
 const contentSection= document.querySelector('.content');
+//let borderCode = [];
 
 
 async function getCountries(){
@@ -130,10 +131,13 @@ async function getCountries(){
       const population= data[i].population;
       const region= data[i].region;
       const capital= data[i].capital;
-      //const subRegion= data[i].subregion;
       const flag= data[i].flag;
 
-      // console.log(data[i].region);
+
+      // borderCode.push(data[i].alpha3Code);
+      // console.log(borderCode);
+
+     
 
       contentSection.innerHTML+=
         `
@@ -159,10 +163,6 @@ async function getCountries(){
 function searchFilter(data){
 
   for(let i=0; i<data.length; i++){
-    // console.log(data[i].name);
-    // console.log(contentSection.children[i].children[1].textContent);
-
-    //const txtValue = contentSection.children[i].children[1].textContent;
 
     if(contentSection.children[i].children[1].textContent.toUpperCase().indexOf(searchField.value.toUpperCase()) > -1){
       contentSection.children[i].style.display = "";
@@ -248,7 +248,6 @@ function switchToDetails(data){
           let liBorderLand = document.createElement('LI');
           liBorderLand.innerHTML += arr;
           border.children[1].appendChild(liBorderLand);
-
         }
       }else{
         console.log(false);
@@ -331,8 +330,6 @@ filterByContinent.addEventListener('change', function() {
   switchToDetails(data);
 
   backToMainContent(data);
-
-  //fromAbbrToFullName(data);
 
 })
 
