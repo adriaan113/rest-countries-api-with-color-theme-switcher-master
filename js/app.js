@@ -90,6 +90,11 @@ function switcheroo(){
 
     allH2.style.color = darkModeText;
 
+    // darkLightSwitch.children[0].innerHTML = '<p><span><i class="far fa-moon"></i></span>Light mode</p>';
+    // darkLightSwitch.children[0].replace("Dark mode", "Light mode");
+    darkLightSwitch.children[1].textContent= 'Light mode';
+
+    //darkLightSwitch.children[0].innerHTML = darkLightSwitch.children[0].innerHTML.replace('<p><span><i class="far fa-moon"></i></span>Dark mode</p>', '<p><span><i class="far fa-moon"></i></span>Light mode</p>');
 
     for(let i= 0; i<allP.length; i++){
       allP[i].style.color = darkModeText;
@@ -194,7 +199,7 @@ function switchToDetails(data){
   for(let i=0;i<data.length;i++){
     contentSection.children[i].addEventListener('click',(e)=>{
 
-      if(e.target.textContent === data[i].name){
+      if(e.target.textContent === data[i].name || e.target.src === data[i].flag || e.target.tagName === 'P' || e.target.tagName === 'UL' || e.target.tagName === 'LI'){
         console.log(true);
 
         extraSection.style.display = 'flex';

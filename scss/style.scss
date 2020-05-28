@@ -69,12 +69,16 @@ body{
         }
         div{
             cursor: pointer;
+            display: flex;
+            flex-flow: nowrap row;
+            justify-content: center;
+            align-items: center;
             p{
                 margin: 1rem;
                 padding-top: 6px;
-                span{
-                    margin-right: .5rem;
-                }
+            }
+            span{
+                margin-right: .5rem;
             }
         }
     }
