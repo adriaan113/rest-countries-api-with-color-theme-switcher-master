@@ -15,6 +15,9 @@ const darkModeText = lightModeEl;
 // save state so that api doesn't reload every time
 
 
+// Save data in a global variable so you can use it everywhere
+let countriesData;
+
 //DARK MODE
 
 
@@ -123,15 +126,18 @@ const contentSection= document.querySelector('.content');
 async function getCountries(){
   try{
     const result = await fetch('https://restcountries.eu/rest/v2/all');
-    const data = await result.json();
-    
-    for(let i=0;i<data.length;i++){ 
 
-      const countryName = data[i].name;
-      const population= data[i].population;
-      const region= data[i].region;
-      const capital= data[i].capital;
-      const flag= data[i].flag;
+    // Put the data in the global variable
+    countriesData = await result.json();
+    
+    for(let i=0;i<countriesData.length;i++){ 
+      // Put the data in a variable for easier access
+      const country = countriesData[i];
+      const countryName = country.name;
+      const population= country.population;
+      const region= country.region;
+      const capital= country.capital;
+      const flag= country.flag;
 
 
       // borderCode.push(data[i].alpha3Code);
@@ -152,17 +158,14 @@ async function getCountries(){
                   </div>
         `;
     }
-
-    return data;
-
   } catch(error){
     console.log(`sorry, could not load countries because of ${error}`);
   }
 }
 
-function searchFilter(data){
+function searchFilter(){
 
-  for(let i=0; i<data.length; i++){
+  for(let i=0; i<countriesData.length; i++){
 
     if(contentSection.children[i].children[1].textContent.toUpperCase().indexOf(searchField.value.toUpperCase()) > -1){
       contentSection.children[i].style.display = "";
@@ -174,10 +177,10 @@ function searchFilter(data){
   }
 }
 
-function regionFilter(data, r){
+function regionFilter(r){
 
-  for(let i=0;i<data.length;i++){
-    if(data[i].region === r){
+  for(let i=0;i<countriesData.length;i++){
+    if(countriesData[i].region === r){
       contentSection.children[i].style.display = "";
     }else{
       contentSection.children[i].style.display = "none";
@@ -185,21 +188,35 @@ function regionFilter(data, r){
   }
   }
 
-  function resetList(data){
-    for(let i=0;i<data.length;i++){
+  function resetList(){
+    for(let i=0;i<countriesData.length;i++){
 
       contentSection.children[i].style.display = "";
    
   }
 }
 
+function findCountryName(alpha3Code) {
+  // Loop over countries to find one that uses the same code
+  for(let i = 0; i < countriesData.length; i++){
+    const country = countriesData[i];
+    if (country.alpha3Code === alpha3Code) {
+      return country.name;
+    }
+  }
 
-function switchToDetails(data){
+  // If no matching country is found, return code instead
+  return alpha3Code;
+}
 
-  for(let i=0;i<data.length;i++){
+
+function switchToDetails(){
+
+  for(let i=0;i<countriesData.length;i++){
+    const country = countriesData[i];
     contentSection.children[i].addEventListener('click',(e)=>{
 
-      if(e.target.textContent === data[i].name || e.target.src === data[i].flag || e.target.tagName === 'P' || e.target.tagName === 'UL' || e.target.tagName === 'LI'){
+      if(e.target.textContent === country.name || e.target.src === country.flag || e.target.tagName === 'P' || e.target.tagName === 'UL' || e.target.tagName === 'LI'){
         console.log(true);
 
         extraSection.style.display = 'flex';
@@ -208,24 +225,24 @@ function switchToDetails(data){
 
         details.innerHTML +=
         `
-        <img src="${data[i].flag}" alt="">
+        <img src="${country.flag}" alt="">
         <div>
-            <h1>${data[i].name}</h1>
+            <h1>${country.name}</h1>
             <ul>
-                <li><b>Native name:</b> ${data[i].nativeName}</li>
-                <li><b>Population:</b> ${data[i].population}</li>
-                <li><b>Region:</b> ${data[i].region}</li>
-                <li><b>Sub Region:</b> ${data[i].subregion}</li>
-                <li><b>Capital:</b> ${data[i].capital}</li>
+                <li><b>Native name:</b> ${country.nativeName}</li>
+                <li><b>Population:</b> ${country.population}</li>
+                <li><b>Region:</b> ${country.region}</li>
+                <li><b>Sub Region:</b> ${country.subregion}</li>
+                <li><b>Capital:</b> ${country.capital}</li>
             </ul>
         `;
 
         moreDetails.innerHTML +=
         `
           <ul>
-              <li><b>Top level domain:</b> ${data[i].topLevelDomain[0]}</li>
-              <li><b>Currencies:</b> ${data[i].currencies[0].name}</li>
-              <li><b>Languages:</b> ${data[i].languages[0].name}</li>
+              <li><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+              <li><b>Currencies:</b> ${country.currencies[0].name}</li>
+              <li><b>Languages:</b> ${country.languages[0].name}</li>
           </ul>
         `;
 
@@ -239,14 +256,9 @@ function switchToDetails(data){
           </ul>
         `;
 
-        for(let j=0;j<data[i].borders.length;j++){
-
-          let arr = [];
-
-          arr.push(data[i].borders[j]);
-
+        for(let j=0;j<country.borders.length;j++){
           let liBorderLand = document.createElement('LI');
-          liBorderLand.innerHTML += arr;
+          liBorderLand.innerHTML += findCountryName(country.borders[j]);
           border.children[1].appendChild(liBorderLand);
         }
       }else{
@@ -256,17 +268,17 @@ function switchToDetails(data){
   }
 }
 
-function fromAbbrToFullName(data){ 
-  for(let i=0;i<data.length;i++){
+function fromAbbrToFullName(){ 
+  for(let i=0;i<countriesData.length;i++){
     const dataName = {
-      abbr : data[i].alpha3Code,
-      full : data[i].name
+      abbr : countriesData[i].alpha3Code,
+      full : countriesData[i].name
     }
     console.log(dataName.full);
   }  
 }
 
-function backToMainContent(data){
+function backToMainContent(){
   const btn = document.querySelector('.extra div button');
 
   btn.addEventListener('click', ()=>{
@@ -289,49 +301,42 @@ function backToMainContent(data){
    
 }
 
-getCountries().then(data =>{
+getCountries().then(() => {
+  searchField.addEventListener('keyup', () => {
+    searchFilter();
+  });
 
-searchField.addEventListener('keyup',()=>{
-  searchFilter(data);
-});
-
-
-
-filterByContinent.addEventListener('change', function() {
-
-
-  switch(this.value){
-    case 'ALL':
-      resetList(data);
-      break;
-    case 'AF':
-      regionFilter(data,'Africa');
-      break;
-    case 'AM':
-      regionFilter(data,'Americas');
-      break;
-    case 'AS':
-      regionFilter(data,'Asia');
-      break;
-    case 'EU':
-      regionFilter(data,'Europe');
-      break;
-    case 'OC':
-      regionFilter(data,'Oceania');
-      break;
-  }
-}, false);
+  filterByContinent.addEventListener('change', () => {
+    switch(this.value){
+      case 'ALL':
+        resetList();
+        break;
+      case 'AF':
+        regionFilter('Africa');
+        break;
+      case 'AM':
+        regionFilter('Americas');
+        break;
+      case 'AS':
+        regionFilter('Asia');
+        break;
+      case 'EU':
+        regionFilter('Europe');
+        break;
+      case 'OC':
+        regionFilter('Oceania');
+        break;
+    }
+  }, false);
   
 
-  darkLightSwitch.addEventListener('click',()=>{
+  darkLightSwitch.addEventListener('click', () => {
     switcheroo();
   });
 
-  switchToDetails(data);
-
-  backToMainContent(data);
-
-})
+  switchToDetails();
+  backToMainContent();
+});
 
 
 
