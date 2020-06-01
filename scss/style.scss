@@ -48,6 +48,30 @@ body{
 }
 
 
+//DARK CLASS
+
+.dark-bg{
+    background-color: $dark-mode-bg !important;
+}
+
+.dark-el{
+    background-color: $dark-mode-el !important;
+}
+
+.dark-text{
+    color: $dark-mode-text !important;
+}
+
+.dark-shadow{
+    box-shadow: none !important;
+}
+
+.dark-btn{
+    background-color: $dark-mode-el !important;
+    color: $dark-mode-text !important;
+    box-shadow: none !important;
+}
+
 
 .wrapper{
     display: flex;
@@ -66,6 +90,11 @@ body{
         h2{
             margin: 1rem;
             font-variation-settings: "wght" 30, "stbl" 70;//WAAROM WERKT DIT NIET??
+            a{
+                text-decoration: none;
+                color: $light-mode-text;
+                cursor: pointer;
+            }
         }
         div{
             cursor: pointer;
@@ -110,6 +139,7 @@ body{
                 @include user-input-style;
                 width: 40%;
                 max-width: 180px;
+                cursor: pointer;
                 }
             }
         .content{
@@ -141,12 +171,6 @@ body{
         }
     }
 
-
-
-
-// .card{
-//     background-color: white;
-// }
 
 .extra{
     display: none;
@@ -198,6 +222,13 @@ body{
             }
         }
     }
+
+    .border{
+        ul{
+            list-style: none;
+            padding: 0;
+        }
+    }
 }
 
 
@@ -212,4 +243,65 @@ body{
   
   ::-ms-input-placeholder { /* Microsoft Edge */
    color: #858585;
+  }
+
+  @media only screen and (min-width: 750px){
+    .wrapper main .user-input{
+         flex-flow: nowrap row;
+         justify-content: space-between;
+     }
+
+     .wrapper main .content{
+         display: flex;
+         flex-flow: wrap row;
+         justify-content: space-between ;
+         .card{
+             width: calc(50% - 1rem);
+            //  &:nth-child(odd){
+            //      margin: .5rem .5rem .5rem 0;
+            //  }
+            //  &:nth-child(even){
+            //      margin: .5rem 0 .5rem .5rem;
+            //  }
+         }
+     }
+     .wrapper main .extra{
+       width: auto;
+       max-width: 900px;
+        .details{
+            flex-flow: nowrap row;
+            justify-content: space-between;
+            img{
+                width: 60%;
+                //margin-right: 3rem;
+            }
+            div{
+                margin-right: 3rem;
+            }
+         }
+     } 
+     .wrapper main .extra .more-details{
+        align-self: flex-end;
+        margin-right: 3rem;
+        margin-top: -7rem;
+     }
+
+     .wrapper main .extra .border{
+         margin-top: -2rem;
+         ul{
+             display: flex;
+            li{
+                margin: 0 .5rem;
+                &:first-child{
+                    margin-left: 0;
+                }
+            }
+         }
+     }
+  }
+
+  @media only screen and (min-width: 1440px){
+    .wrapper main .content .card{
+        width: calc(33.333% - 3rem);
+    }
   }

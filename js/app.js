@@ -7,11 +7,11 @@ const lightModeBg = 'rgb(250, 250, 250)';
 const lightModeEl = 'rgb(255, 255, 255)';
 
 const darkModeEl = 'rgb(43, 57, 69)';
-const darkModebBg = 'rgb(32, 44, 55)';
+const darkModeBg = 'rgb(32, 44, 55)';
 const darkModeText = lightModeEl;
 
 
-//TO DO LIST: ADD MQ, change borders to their full name, make header logo a link,
+//TO DO LIST: , change borders to their full name, ,
 // save state so that api doesn't reload every time
 
 
@@ -24,11 +24,11 @@ let countriesData;
 const darkLightSwitch = document.querySelector('.dark-light');
 
 document.querySelector('.wrapper').style.backgroundColor = lightModeBg;
-document.querySelector('header').style.backgroundColor = lightModeEl;
+// document.querySelector('header').style.backgroundColor = lightModeEl;
 
 
 const searchField = document.querySelector('#search');
-searchField.style.backgroundColor = lightModeEl;
+//searchField.style.backgroundColor = lightModeEl;
 
 const filterByContinent = document.querySelector('#filter');
 
@@ -45,83 +45,59 @@ const border = document.querySelector('.border');
 const userInput = document.querySelector('.user-input');
 
 
+function changeBtnText(){
+  if(darkLightSwitch.children[1].innerHTML === 'Dark mode'){
+    darkLightSwitch.children[1].innerHTML = 'Light mode';
+  }else if(darkLightSwitch.children[1].innerHTML === 'Light mode'){
+    darkLightSwitch.children[1].innerHTML = 'Dark mode';
+  }
+}
+
+
 function switcheroo(){
 
   const card = document.querySelectorAll('.card');
-
   const allP= document.querySelectorAll('p');
   const allH2= document.querySelector('h2');
   const allH4= document.querySelectorAll('h4');
 
 
-  if(document.querySelector('.wrapper').style.backgroundColor != lightModeBg){
-    
-    document.querySelector('.wrapper').style.backgroundColor = lightModeBg;
-    document.querySelector('header').style.backgroundColor = lightModeEl;
-    searchField.style.backgroundColor = lightModeEl;
-    filterByContinent.style.backgroundColor = lightModeEl;
+    document.querySelector('body').classList.toggle('dark-bg');
+    document.querySelector('.wrapper').classList.toggle('dark-bg');
+    document.querySelector('header').classList.toggle('dark-el');
+    document.querySelector('header').classList.toggle('dark-shadow');
+    document.querySelector('.extra div button').classList.toggle('dark-text');
 
-    allH2.style.color = lightModeText;
-
-    darkLightSwitch.children[1].textContent = 'Dark mode';
-    darkLightSwitch.children[0].style.color = lightModeText;
-
-    for(let i= 0; i<allP.length; i++){
-      allP[i].style.color = lightModeText;
-    }
-
-
-    for(let i= 0; i<allH4.length; i++){
-      allH4[i].style.color = lightModeText;
-    }
-
-
-    for(let i= 0; i<card.length; i++){
-      card[i].style.backgroundColor = lightModeEl;
-      card[i].style.boxShadow = '0px 0px 20px #d9d9d9';
-    }
-
-  }else if( document.querySelector('.wrapper').style.backgroundColor = lightModeBg){
-    
-    document.querySelector('.wrapper').style.backgroundColor = darkModebBg;
-    document.querySelector('header').style.backgroundColor = darkModeEl;
-    document.querySelector('header').style.boxShadow = 'none';
-    
-    searchField.style.backgroundColor = darkModeEl;
+    searchField.classList.toggle('dark-el');
     searchField.classList.add('dark-mode-search');
-    searchField.style.boxShadow = 'none'
+    searchField.classList.toggle('dark-shadow');
 
-    filterByContinent.style.backgroundColor = darkModeEl;
-    filterByContinent.style.boxShadow = 'none';
+    filterByContinent.classList.toggle('dark-el');
+    filterByContinent.classList.toggle('dark-shadow');
+    allH2.children[0].classList.toggle('dark-text');
+    darkLightSwitch.children[0].classList.toggle('dark-text');
 
-    allH2.style.color = darkModeText;
-
-    darkLightSwitch.children[1].textContent = 'Light mode';
-    darkLightSwitch.children[0].style.color = darkModeText;
-
+    document.querySelector('.extra div button').classList.toggle('dark-btn');
+    document.querySelector('.fa-arrow-left').classList.toggle('dark-text');
+    
     for(let i= 0; i<allP.length; i++){
-      allP[i].style.color = darkModeText;
+      allP[i].classList.toggle('dark-text');
     }
 
-
     for(let i= 0; i<allH4.length; i++){
-      allH4[i].style.color = darkModeText;
+      allH4[i].classList.toggle('dark-text');
     }
 
     for(let i= 0; i< card.length; i++){
-      card[i].style.backgroundColor = darkModeEl;
-      card[i].style.boxShadow = 'none';
+      card[i].classList.toggle('dark-el');
+      card[i].classList.toggle('dark-shadow')
     }
-
-  }
 };
 
 
 //FETCH
 
 const contentSection= document.querySelector('.content');
-//let borderCode = [];
-
 
 async function getCountries(){
   try{
@@ -138,12 +114,6 @@ async function getCountries(){
       const region= country.region;
       const capital= country.capital;
       const flag= country.flag;
-
-
-      // borderCode.push(data[i].alpha3Code);
-      // console.log(borderCode);
-
-     
 
       contentSection.innerHTML+=
         `
@@ -268,22 +238,13 @@ function switchToDetails(){
   }
 }
 
-function fromAbbrToFullName(){ 
-  for(let i=0;i<countriesData.length;i++){
-    const dataName = {
-      abbr : countriesData[i].alpha3Code,
-      full : countriesData[i].name
-    }
-    console.log(dataName.full);
-  }  
-}
 
 function backToMainContent(){
   const btn = document.querySelector('.extra div button');
 
   btn.addEventListener('click', ()=>{
     extraSection.style.display = 'none';
-    contentSection.style.display = 'block';
+    contentSection.style.display = 'flex';
     userInput.style.display = 'flex';
 
    while(details.firstChild){
@@ -330,14 +291,17 @@ getCountries().then(() => {
   }, false);
   
 
-  darkLightSwitch.addEventListener('click', () => {
-    switcheroo();
-  });
+  // darkLightSwitch.addEventListener('click', () => {
+  //   switcheroo();
+  // });
 
   switchToDetails();
   backToMainContent();
 });
 
-
+darkLightSwitch.addEventListener('click', () => {
+  changeBtnText();
+  switcheroo();
+});
 
 
