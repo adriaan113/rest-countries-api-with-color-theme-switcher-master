@@ -45,6 +45,8 @@ const border = document.querySelector('.border');
 const userInput = document.querySelector('.user-input');
 
 
+
+
 function changeBtnText(){
   if(darkLightSwitch.children[1].innerHTML === 'Dark mode'){
     darkLightSwitch.children[1].innerHTML = 'Light mode';
@@ -55,6 +57,8 @@ function changeBtnText(){
 
 
 function switcheroo(){
+
+  changeBtnText();
 
   const card = document.querySelectorAll('.card');
   const allP= document.querySelectorAll('p');
@@ -88,10 +92,25 @@ function switcheroo(){
       allH4[i].classList.toggle('dark-text');
     }
 
-    for(let i= 0; i< card.length; i++){
+    for(let i= 0; i<card.length; i++){
       card[i].classList.toggle('dark-el');
-      card[i].classList.toggle('dark-shadow')
+      card[i].classList.toggle('dark-shadow');
     }
+
+   const darkDetails = document.querySelectorAll('.dark-details');
+   for(let i= 0; i<darkDetails.length; i++){
+    darkDetails[i].classList.toggle('dark-text');
+   }
+
+   border.children[0].classList.toggle('dark-text');
+
+  if(border.children){
+    for(let i=0; i<border.children[1].children.length;i++){
+      border.children[1].children[i].classList.toggle('dark-text');
+    }  
+  }else{
+    console.log(false);
+  } 
 };
 
 
@@ -197,22 +216,22 @@ function switchToDetails(){
         `
         <img src="${country.flag}" alt="">
         <div>
-            <h1>${country.name}</h1>
+            <h1 class="dark-details">${country.name}</h1>
             <ul>
-                <li><b>Native name:</b> ${country.nativeName}</li>
-                <li><b>Population:</b> ${country.population}</li>
-                <li><b>Region:</b> ${country.region}</li>
-                <li><b>Sub Region:</b> ${country.subregion}</li>
-                <li><b>Capital:</b> ${country.capital}</li>
+                <li class="dark-details"><b>Native name:</b> ${country.nativeName}</li>
+                <li class="dark-details"><b>Population:</b> ${country.population}</li>
+                <li class="dark-details"><b>Region:</b> ${country.region}</li>
+                <li class="dark-details"><b>Sub Region:</b> ${country.subregion}</li>
+                <li class="dark-details"><b>Capital:</b> ${country.capital}</li>
             </ul>
         `;
 
         moreDetails.innerHTML +=
         `
           <ul>
-              <li><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
-              <li><b>Currencies:</b> ${country.currencies[0].name}</li>
-              <li><b>Languages:</b> ${country.languages[0].name}</li>
+              <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+              <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+              <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
           </ul>
         `;
 
@@ -228,6 +247,9 @@ function switchToDetails(){
 
         for(let j=0;j<country.borders.length;j++){
           let liBorderLand = document.createElement('LI');
+          //liBorderLand.style.backgroundColor = 'pink';
+          liBorderLand.style.color = lightModeText;
+          //liBorderLand.classList.toggle('dark-text');
           liBorderLand.innerHTML += findCountryName(country.borders[j]);
           border.children[1].appendChild(liBorderLand);
         }
@@ -300,7 +322,7 @@ getCountries().then(() => {
 });
 
 darkLightSwitch.addEventListener('click', () => {
-  changeBtnText();
+  //changeBtnText();
   switcheroo();
 });
 
