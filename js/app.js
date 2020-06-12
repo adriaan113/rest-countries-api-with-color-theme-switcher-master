@@ -11,7 +11,7 @@ const darkModeBg = 'rgb(32, 44, 55)';
 const darkModeText = lightModeEl;
 
 
-//TO DO LIST: , change borders to their full name, ,
+//TO DO LIST:  ,
 // save state so that api doesn't reload every time
 
 
@@ -193,10 +193,11 @@ function findCountryName(alpha3Code) {
       return country.name;
     }
   }
-
   // If no matching country is found, return code instead
   return alpha3Code;
 }
+
+
 
 
 function switchToDetails(){
@@ -244,20 +245,103 @@ function switchToDetails(){
             
           </ul>
         `;
+        insertBorders(country);
 
-        for(let j=0;j<country.borders.length;j++){
-          let liBorderLand = document.createElement('LI');
-          //liBorderLand.style.backgroundColor = 'pink';
-          liBorderLand.style.color = lightModeText;
-          //liBorderLand.classList.toggle('dark-text');
-          liBorderLand.innerHTML += findCountryName(country.borders[j]);
-          border.children[1].appendChild(liBorderLand);
-        }
+        // for(let j=0;j<country.borders.length;j++){
+        //   let liBorderLand = document.createElement('BUTTON');
+        //   //liBorderLand.style.backgroundColor = 'pink';
+        //   liBorderLand.style.color = lightModeText;
+        //   //liBorderLand.classList.toggle('dark-text');
+        //   liBorderLand.innerHTML += findCountryName(country.borders[j]);
+        //   border.children[1].appendChild(liBorderLand);
+
+        //   liBorderLand.addEventListener('click',(e)=>{
+        //     //console.log(e.target.textContent);
+        //     if(e.target.textContent === findCountryName(country.borders[j])){
+        //       console.log(e.target.textContent);
+              
+        //     }
+        //   });
+        // }
       }else{
         console.log(false);
       } 
     });
   }
+}
+
+
+
+function insertBorders(country){
+  for(let j=0;j<country.borders.length;j++){
+    let liBorderLand = document.createElement('BUTTON');
+    //liBorderLand.style.backgroundColor = 'pink';
+    liBorderLand.style.color = lightModeText;
+    //liBorderLand.classList.toggle('dark-text');
+    liBorderLand.innerHTML += findCountryName(country.borders[j]);
+    border.children[1].appendChild(liBorderLand);
+
+    liBorderLand.addEventListener('click',(e)=>{
+      //console.log(e.target.textContent);
+      if(e.target.textContent === findCountryName(country.borders[j])){
+        //console.log(e.target.textContent);
+        borderDetails(e);
+        
+      }
+    });
+  }
+}
+
+
+
+function borderDetails(e){
+  //console.log(e.target);
+
+  details.innerHTML = '';
+  moreDetails.innerHTML= '';
+  border.innerHTML= '';
+
+
+  for(let i=0;i<countriesData.length;i++){
+    const country = countriesData[i];
+
+      if(e.target.textContent === country.name){
+        details.innerHTML +=
+        `
+        <img src="${country.flag}" alt="">
+        <div>
+            <h1 class="dark-details">${country.name}</h1>
+            <ul>
+                <li class="dark-details"><b>Native name:</b> ${country.nativeName}</li>
+                <li class="dark-details"><b>Population:</b> ${country.population}</li>
+                <li class="dark-details"><b>Region:</b> ${country.region}</li>
+                <li class="dark-details"><b>Sub Region:</b> ${country.subregion}</li>
+                <li class="dark-details"><b>Capital:</b> ${country.capital}</li>
+            </ul>
+        `;
+
+        moreDetails.innerHTML +=
+        `
+          <ul>
+              <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+              <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+              <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
+          </ul>
+        `;
+
+
+
+        border.innerHTML +=
+        `
+          <h3>Border countries:</h3>
+          <ul>
+            
+          </ul>
+        `;
+       
+        insertBorders(country);
+      }
+    } 
 }
 
 
@@ -325,5 +409,3 @@ darkLightSwitch.addEventListener('click', () => {
   //changeBtnText();
   switcheroo();
 });
-
-
