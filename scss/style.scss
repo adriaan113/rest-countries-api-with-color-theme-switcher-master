@@ -143,6 +143,8 @@ body{
                 }
             }
         .content{
+            display: flex;
+            flex-flow: column nowrap;
             margin: 0 auto;
             width: 80%;
             .card{
@@ -193,13 +195,13 @@ body{
         }
     }
     .details{
-       // width: 100%;
-       display: flex;
-       flex-flow: nowrap column;
-       align-items: flex-start;
+    //    // width: 100%;
+        display: flex;
+        flex-flow: nowrap column;
+        align-items: flex-start;
         img{
             width: 100%;
-            align-self: center;
+            //align-self: center;
             margin-bottom: 3rem;
         }
         h1{
@@ -208,19 +210,20 @@ body{
         ul{
             list-style: none;
             padding: 0;
+            margin-bottom: 0;
             li{
                 padding: .5rem 0;
             }
         }
-    }
-    .more-details{
-        ul{
-            list-style: none;
-            padding: 0;
-            li{
-                padding: .5rem 0;
-            }
-        }
+    //     .more-details{
+    //         ul{
+    //             list-style: none;
+    //             padding: 0;
+    //             li{
+    //                 padding: .5rem 0;
+    //             }
+    //         }
+    //     }
     }
 
     .border{
@@ -228,7 +231,13 @@ body{
             list-style: none;
             padding: 0;
             li{
-                color: $light-mode-text;
+                @include user-input-style();
+                margin: .5rem 0;
+                cursor: pointer;
+                max-width: 140px;
+                text-align: center;
+                padding: 1rem 0;
+                font-size: .7rem;
             }
         }
     }
@@ -255,7 +264,7 @@ body{
      }
 
      .wrapper main .content{
-         display: flex;
+         //display: flex;
          flex-flow: wrap row;
          justify-content: space-between ;
          .card{
@@ -268,44 +277,107 @@ body{
             //  }
          }
      }
-     .wrapper main .extra{
-       width: auto;
-       max-width: 900px;
-       margin: 0 2rem;
-        .details{
-            flex-flow: nowrap row;
-            justify-content: space-between;
-            img{
-                width: 60%;
-                //margin-right: 3rem;
-            }
-            div{
-                margin-right: 3rem;
-            }
-         }
-     } 
-     .wrapper main .extra .more-details{
-        align-self: flex-end;
-        margin-right: 3rem;
-        margin-top: -7rem;
-     }
 
-     .wrapper main .extra .border{
-         margin-top: -2rem;
-         ul{
-             display: flex;
-            li{
-                margin: 0 .5rem;
-                &:first-child{
-                    margin-left: 0;
+      .wrapper main .extra{
+//        //width: auto;
+        max-width: 980px;
+//        //margin: 0 2rem;
+         .details{
+             flex-flow: wrap row;
+             justify-content: space-between;
+//             width: 100%;
+             img{
+                 width: 40%;
+//                 //margin-right: 3rem;
+//                 max-width: 600px;
+//                 margin-bottom: 1rem;
+             }
+//             div{
+//                 margin-right: 3rem;
+//                 margin-left: auto;
+//             }
+            .more-details{
+               ul{
+                    margin-top: 4.2rem;
                 }
             }
          }
-     }
+         .border{
+             ul{
+                display: flex;
+                flex-flow: wrap row;
+                li{
+                    width: 140px;
+                    margin: .5rem;
+                }
+             }
+         }
+      } 
+
+//      .wrapper main .extra .border{
+//          margin-top: -2rem;
+//          order: 3;
+//          ul{
+//              display: flex;
+//             li{
+//                 margin: 0 .5rem;
+//                 &:first-child{
+//                     margin-left: 0;
+//                 }
+//             }
+//          }
+//      }
+//    }
+
+//   @media only screen and (min-width: 950px){
+
+//     .wrapper main .extra{
+
+//         max-width: 900px;
+
+//          .details{
+//              flex-flow: wrap row;
+//              justify-content: space-between;
+//              width: 100%;
+//              img{
+//                  width: 60%;
+//                  //margin-right: 3rem;
+//                  max-width: 600px;
+//                  margin-bottom: 1rem;
+//              }
+//              div{
+//                  margin-right: 3rem;
+//                  margin-left: auto;
+//              }
+//              .more-details{
+//                  ul{
+//                      margin-top: -4.1rem;
+//                  }
+//              }
+//           }
+//       } 
+
+//   }
   }
 
-  @media only screen and (min-width: 1440px){
+    @media only screen and (min-width: 1440px){
     .wrapper main .content .card{
         width: calc(33.333% - 3rem);
     }
-  }
+    .wrapper main .extra{
+        max-width: none;
+        .details{  
+            width: 90%;
+            img{
+                width: 60%;
+                max-width: 600px;
+            }
+            div{
+                margin-left: 2rem;
+            }
+            .more-details{
+                margin-left: 1rem;
+            }
+        }
+    }
+}

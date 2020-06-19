@@ -18,6 +18,7 @@ const darkModeText = lightModeEl;
 // Save data in a global variable so you can use it everywhere
 let countriesData;
 
+
 //DARK MODE
 
 
@@ -114,9 +115,11 @@ function switcheroo(){
 };
 
 
+
 //FETCH
 
 const contentSection= document.querySelector('.content');
+
 
 async function getCountries(){
   try{
@@ -137,20 +140,121 @@ async function getCountries(){
       contentSection.innerHTML+=
         `
         <div class="card">
-                      <img src="${flag}" alt="flag of ${countryName}">
-                        <h4>${countryName}</h4>
-                        <ul>
-                          <li><p>Population: ${population}</p></li>
-                          <li><p>Region: ${region}</p></li>
-                          <li><p>Capital: ${capital}</p></li>
-                      </ul>
-                  </div>
+          <img src="${flag}" alt="flag of ${countryName}">
+            <h4>${countryName}</h4>
+            <ul>
+              <li><p>Population: ${population}</p></li>
+              <li><p>Region: ${region}</p></li>
+              <li><p>Capital: ${capital}</p></li>
+          </ul>
+        </div>
         `;
     }
-  } catch(error){
+
+    localStorage.setItem('savedLocally', JSON.stringify(countriesData));
+
+  }catch(error){
     console.log(`sorry, could not load countries because of ${error}`);
   }
 }
+
+
+if(localStorage.getItem('savedLocally')){
+  console.log(true);
+  countriesData = JSON.parse(localStorage.getItem('savedLocally'));
+
+  for(let i=0;i<countriesData.length;i++){ 
+
+    const country = countriesData[i];
+    const countryName = country.name;
+    const population= country.population;
+    const region= country.region;
+    const capital= country.capital;
+    const flag= country.flag;
+
+    contentSection.innerHTML+=
+      `
+      <div class="card">
+        <img src="${flag}" alt="flag of ${countryName}">
+          <h4>${countryName}</h4>
+          <ul>
+            <li><p>Population: ${population}</p></li>
+            <li><p>Region: ${region}</p></li>
+            <li><p>Capital: ${capital}</p></li>
+        </ul>
+      </div>
+      `;
+  }
+  
+  searchField.addEventListener('keyup', () => {
+    searchFilter();
+  });
+
+  filterByContinent.addEventListener('change', () => {
+    switch(this.value){
+      case 'ALL':
+        resetList();
+        break;
+      case 'AF':
+        regionFilter('Africa');
+        break;
+      case 'AM':
+        regionFilter('Americas');
+        break;
+      case 'AS':
+        regionFilter('Asia');
+        break;
+      case 'EU':
+        regionFilter('Europe');
+        break;
+      case 'OC':
+        regionFilter('Oceania');
+        break;
+    }
+  }, false);
+
+   switchToDetails();
+   backToMainContent();
+
+  
+}else{
+  console.log(false);
+
+  getCountries().then(() => {
+    searchField.addEventListener('keyup', () => {
+      searchFilter();
+    });
+  
+    filterByContinent.addEventListener('change', () => {
+      switch(this.value){
+        case 'ALL':
+          resetList();
+          break;
+        case 'AF':
+          regionFilter('Africa');
+          break;
+        case 'AM':
+          regionFilter('Americas');
+          break;
+        case 'AS':
+          regionFilter('Asia');
+          break;
+        case 'EU':
+          regionFilter('Europe');
+          break;
+        case 'OC':
+          regionFilter('Oceania');
+          break;
+      }
+    }, false);
+    
+  
+    switchToDetails();
+    backToMainContent();
+  });
+
+}
+
 
 function searchFilter(){
 
@@ -225,16 +329,25 @@ function switchToDetails(){
                 <li class="dark-details"><b>Sub Region:</b> ${country.subregion}</li>
                 <li class="dark-details"><b>Capital:</b> ${country.capital}</li>
             </ul>
+        </div>
+
+        <div class="more-details">
+          <ul>
+            <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+            <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+            <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
+          </ul>
+        </div>
         `;
 
-        moreDetails.innerHTML +=
-        `
-          <ul>
-              <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
-              <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
-              <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
-          </ul>
-        `;
+        // moreDetails.innerHTML +=
+        // `
+        //   <ul>
+        //       <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+        //       <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+        //       <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
+        //   </ul>
+        // `;
 
 
 
@@ -245,24 +358,9 @@ function switchToDetails(){
             
           </ul>
         `;
+
         insertBorders(country);
 
-        // for(let j=0;j<country.borders.length;j++){
-        //   let liBorderLand = document.createElement('BUTTON');
-        //   //liBorderLand.style.backgroundColor = 'pink';
-        //   liBorderLand.style.color = lightModeText;
-        //   //liBorderLand.classList.toggle('dark-text');
-        //   liBorderLand.innerHTML += findCountryName(country.borders[j]);
-        //   border.children[1].appendChild(liBorderLand);
-
-        //   liBorderLand.addEventListener('click',(e)=>{
-        //     //console.log(e.target.textContent);
-        //     if(e.target.textContent === findCountryName(country.borders[j])){
-        //       console.log(e.target.textContent);
-              
-        //     }
-        //   });
-        // }
       }else{
         console.log(false);
       } 
@@ -274,17 +372,13 @@ function switchToDetails(){
 
 function insertBorders(country){
   for(let j=0;j<country.borders.length;j++){
-    let liBorderLand = document.createElement('BUTTON');
-    //liBorderLand.style.backgroundColor = 'pink';
+    let liBorderLand = document.createElement('LI');
     liBorderLand.style.color = lightModeText;
-    //liBorderLand.classList.toggle('dark-text');
     liBorderLand.innerHTML += findCountryName(country.borders[j]);
     border.children[1].appendChild(liBorderLand);
 
     liBorderLand.addEventListener('click',(e)=>{
-      //console.log(e.target.textContent);
       if(e.target.textContent === findCountryName(country.borders[j])){
-        //console.log(e.target.textContent);
         borderDetails(e);
         
       }
@@ -295,10 +389,9 @@ function insertBorders(country){
 
 
 function borderDetails(e){
-  //console.log(e.target);
 
   details.innerHTML = '';
-  moreDetails.innerHTML= '';
+  //moreDetails.innerHTML= '';
   border.innerHTML= '';
 
 
@@ -318,18 +411,26 @@ function borderDetails(e){
                 <li class="dark-details"><b>Sub Region:</b> ${country.subregion}</li>
                 <li class="dark-details"><b>Capital:</b> ${country.capital}</li>
             </ul>
-        `;
+        </div>
 
-        moreDetails.innerHTML +=
-        `
+        <div class="more-details">
           <ul>
-              <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
-              <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
-              <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
+                <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+                <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+                <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
           </ul>
+        </div>
+
         `;
 
-
+        // moreDetails.innerHTML +=
+        // `
+        //   <ul>
+        //       <li class="dark-details"><b>Top level domain:</b> ${country.topLevelDomain[0]}</li>
+        //       <li class="dark-details"><b>Currencies:</b> ${country.currencies[0].name}</li>
+        //       <li class="dark-details"><b>Languages:</b> ${country.languages[0].name}</li>
+        //   </ul>
+        // `;
 
         border.innerHTML +=
         `
@@ -357,9 +458,9 @@ function backToMainContent(){
      details.removeChild(details.firstChild);
    }
 
-   while(moreDetails.firstChild){
-     moreDetails.removeChild(moreDetails.firstChild);
-   }
+  //  while(moreDetails.firstChild){
+  //    moreDetails.removeChild(moreDetails.firstChild);
+  //  }
 
    while(border.firstChild){
      border.removeChild(border.firstChild);
@@ -368,44 +469,46 @@ function backToMainContent(){
    
 }
 
-getCountries().then(() => {
-  searchField.addEventListener('keyup', () => {
-    searchFilter();
-  });
+// getCountries().then(() => {
+//   searchField.addEventListener('keyup', () => {
+//     searchFilter();
+//   });
 
-  filterByContinent.addEventListener('change', () => {
-    switch(this.value){
-      case 'ALL':
-        resetList();
-        break;
-      case 'AF':
-        regionFilter('Africa');
-        break;
-      case 'AM':
-        regionFilter('Americas');
-        break;
-      case 'AS':
-        regionFilter('Asia');
-        break;
-      case 'EU':
-        regionFilter('Europe');
-        break;
-      case 'OC':
-        regionFilter('Oceania');
-        break;
-    }
-  }, false);
+//   filterByContinent.addEventListener('change', () => {
+//     switch(this.value){
+//       case 'ALL':
+//         resetList();
+//         break;
+//       case 'AF':
+//         regionFilter('Africa');
+//         break;
+//       case 'AM':
+//         regionFilter('Americas');
+//         break;
+//       case 'AS':
+//         regionFilter('Asia');
+//         break;
+//       case 'EU':
+//         regionFilter('Europe');
+//         break;
+//       case 'OC':
+//         regionFilter('Oceania');
+//         break;
+//     }
+//   }, false);
   
 
-  // darkLightSwitch.addEventListener('click', () => {
-  //   switcheroo();
-  // });
-
-  switchToDetails();
-  backToMainContent();
-});
+//   switchToDetails();
+//   backToMainContent();
+// });
 
 darkLightSwitch.addEventListener('click', () => {
-  //changeBtnText();
   switcheroo();
 });
+
+
+// const koeka = JSON.parse(localStorage.getItem('test'));
+
+// console.log(koeka);
+
+//console.log(JSON.parse(localStorage.getItem('test')));
